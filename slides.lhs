@@ -8,7 +8,6 @@
 % \usepackage{minted}
 \usepackage{listings}
 
-
 \usepgfplotslibrary{dateplot}
 
 % \usemintedstyle{trac}
