@@ -1,2 +1,2 @@
-compiler: xelatex -shell-escape
+compiler: pdflatex
 root_file: slides.tex
