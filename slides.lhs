@@ -5,13 +5,13 @@
 \usepackage{tikz-cd}       % Коммутативные диаграммы
 \usepackage{booktabs}
 \usepackage[scale=2]{ccicons}
-\usepackage{minted}
+% \usepackage{minted}
 \usepackage{listings}
 
 
 \usepgfplotslibrary{dateplot}
 
-\usemintedstyle{trac}
+% \usemintedstyle{trac}
 
 % \lstset{language=Haskell,
 %         basicstyle=\footnotesize}
@@ -107,185 +107,185 @@ instance  Monad Parser where
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Строковые типы в Haskell}
-  \begin{itemize}
-    \setlength\itemsep{2em}
-    \item[] {\Large{String}} \\
-      \small{Псевдоним для списка символов}
-    \item[] {\Large{ByteString}} \\
-      \small{Наиболее низкоуровневый тип}
-    \item[] {\Large{Text}} \\
-      \small{Тип для работы с Unicode-текстом}
-  \end{itemize}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Строковые типы в Haskell}
+%   \begin{itemize}
+%     \setlength\itemsep{2em}
+%     \item[] {\Large{String}} \\
+%       \small{Псевдоним для списка символов}
+%     \item[] {\Large{ByteString}} \\
+%       \small{Наиболее низкоуровневый тип}
+%     \item[] {\Large{Text}} \\
+%       \small{Тип для работы с Unicode-текстом}
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Строковые типы как моноиды~[Monoids]}
-    \begin{block}{Полиморфный по входу базовый парсер}
-      \begin{code}
-item :: TextualMonoid t => Parser t Char
-item =  Parser f 
-        where f inp = splitCharacterPrefix inp 
-      \end{code}
-    \end{block}
-    \begin{block}{Фукнция, отделяющая префикс}
-      \begin{code}
-splitCharacterPrefix ::  TextualMonoid t => 
-                         t -> Maybe (Char, t)
-      \end{code}
-    \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Строковые типы как моноиды~[Monoids]}
+%     \begin{block}{Полиморфный по входу базовый парсер}
+%       \begin{code}
+% item :: TextualMonoid t => Parser t Char
+% item =  Parser f 
+%         where f inp = splitCharacterPrefix inp 
+%       \end{code}
+%     \end{block}
+%     \begin{block}{Фукнция, отделяющая префикс}
+%       \begin{code}
+% splitCharacterPrefix ::  TextualMonoid t => 
+%                          t -> Maybe (Char, t)
+%       \end{code}
+%     \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсер как стек монад}
-  \begin{block}{Обновленный тип Parser}
-    \begin{code}
-newtype  Parser t a = 
-         Parser  (StateT (ParserState t) 
-                 (Either (ErrorReport t)) a)
-    \end{code}
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Парсер как стек монад}
+%   \begin{block}{Обновленный тип Parser}
+%     \begin{code}
+% newtype  Parser t a = 
+%          Parser  (StateT (ParserState t) 
+%                  (Either (ErrorReport t)) a)
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Extensible Effects~[ExtEff13]}
-  \begin{block}{Тип Eff}
-    \begin{code}
-type Eff r a = Free (Union r) a
-    \end{code}
-  \end{block}
-  \begin{block}{Пример статического набора эффектов}
-    \begin{center}
-Eff (Reader Int :> Reader Bool :> Void) a
-    \end{center}
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Extensible Effects~[ExtEff13]}
+%   \begin{block}{Тип Eff}
+%     \begin{code}
+% type Eff r a = Free (Union r) a
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Пример статического набора эффектов}
+%     \begin{center}
+% Eff (Reader Int :> Reader Bool :> Void) a
+%     \end{center}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
+% \begin{frame}[fragile]
+%   \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
 
-  \begin{block}{Парсер-предикат и его эффекты}
-    \begin{code}
-sat ::  ( Member Fail r
-        , Member (State String) r
-        ) => (Char -> Bool) -> Eff r Char
-sat p   = do  x <- item
-              if p x then return x else die
-    \end{code}
-  \end{block}
+%   \begin{block}{Парсер-предикат и его эффекты}
+%     \begin{code}
+% sat ::  ( Member Fail r
+%         , Member (State String) r
+%         ) => (Char -> Bool) -> Eff r Char
+% sat p   = do  x <- item
+%               if p x then return x else die
+%     \end{code}
+%   \end{block}
 
-  \begin{block}{Запуск парсера}
-    \begin{code}
-parse p inp = run . runFail . runState inp $ p
-    \end{code}
-  \end{block}
-\end{frame}
+%   \begin{block}{Запуск парсера}
+%     \begin{code}
+% parse p inp = run . runFail . runState inp $ p
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
+% \begin{frame}[fragile]
+%   \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
 
-  \begin{block}{Парсер для слов и его эффекты}
-    \begin{code}
-word ::  (Member Fail r
-         , Member (State String) r
-         , Member (Choose) r) => Eff r String
-word = some letter
-	  \end{code}
-  \end{block}
+%   \begin{block}{Парсер для слов и его эффекты}
+%     \begin{code}
+% word ::  (Member Fail r
+%          , Member (State String) r
+%          , Member (Choose) r) => Eff r String
+% word = some letter
+% 	  \end{code}
+%   \end{block}
 
-  \begin{block}{Запуск парсера}
-    \begin{code}
-parseWithChoose p inp =
-  run . runChoice . runFail . runState inp $ p
-    \end{code}
-  \end{block}
-\end{frame}
+%   \begin{block}{Запуск парсера}
+%     \begin{code}
+% parseWithChoose p inp =
+%   run . runChoice . runFail . runState inp $ p
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Язык Markdown и его использование}
-    \vspace{5em}
-    \includegraphics[scale=1]{images/markdown.png}
-    \includegraphics[scale=0.35]{images/octocat.png}
-    \includegraphics[scale=0.35]{images/discourse.png}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Язык Markdown и его использование}
+%     \vspace{5em}
+%     \includegraphics[scale=1]{images/markdown.png}
+%     \includegraphics[scale=0.35]{images/octocat.png}
+%     \includegraphics[scale=0.35]{images/discourse.png}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Пример документа Markdown}
-  \vspace{0.5cm}
-  \screenshotw{11cm}{md-html.png}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Пример документа Markdown}
+%   \vspace{0.5cm}
+%   \screenshotw{11cm}{md-html.png}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{AST для Markdown в Haskell}
-  \begin{block}{Документ}
-    \begin{code}
-type Document = [Block]
-    \end{code}
-  \end{block}
-  \begin{block}{Блок}
-    \begin{code}
-data  Block  = Blank
-             | Header (Int,Line)
-             | Paragraph [Line]
-             | UnorderedList [Line]
-             | BlockQuote [Line]
-    \end{code}
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{AST для Markdown в Haskell}
+%   \begin{block}{Документ}
+%     \begin{code}
+% type Document = [Block]
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Блок}
+%     \begin{code}
+% data  Block  = Blank
+%              | Header (Int,Line)
+%              | Paragraph [Line]
+%              | UnorderedList [Line]
+%              | BlockQuote [Line]
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{AST для Markdown в Haskell}
-  \begin{block}{Строка}
-    \begin{code}
-data Line = Empty | NonEmpty [Inline]    
-    \end{code}
-  \end{block}
-  \begin{block}{Элементы строки}
-    \begin{code}
-data  Inline  = Plain String
-              | Bold String
-              | Italic String
-              | Monospace String    
-    \end{code}
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{AST для Markdown в Haskell}
+%   \begin{block}{Строка}
+%     \begin{code}
+% data Line = Empty | NonEmpty [Inline]    
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Элементы строки}
+%     \begin{code}
+% data  Inline  = Plain String
+%               | Bold String
+%               | Italic String
+%               | Monospace String    
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Конструирование AST}
-    \begin{block}{Парсер для документа}
-      \vspace{-1.4em}
-      \begin{code}
-doc ::  TM.TextualMonoid t => Parser t Document
-doc =   many block
-        where block =  blank <|> header <|> paragraph 
-                       <|> unorderdList <|> blockquote 
-                       <|> blockMath
-      \end{code}
-      \vspace{-1.45em}
-    \end{block}
-    \begin{block}{Пример парсера для заголовка}
-      \vspace{-1.4em}
-      \begin{code}
-header :: TM.TextualMonoid t => Parser t Block 
-header =  do
-          hashes  <- token $ some $ char '#' 
-          text    <- nonEmptyLine
-          return $ Header (length hashes,text)
-      \end{code}
-    \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Конструирование AST}
+%     \begin{block}{Парсер для документа}
+%       \vspace{-1.4em}
+%       \begin{code}
+% doc ::  TM.TextualMonoid t => Parser t Document
+% doc =   many block
+%         where block =  blank <|> header <|> paragraph 
+%                        <|> unorderdList <|> blockquote 
+%                        <|> blockMath
+%       \end{code}
+%       \vspace{-1.45em}
+%     \end{block}
+%     \begin{block}{Пример парсера для заголовка}
+%       \vspace{-1.4em}
+%       \begin{code}
+% header :: TM.TextualMonoid t => Parser t Block 
+% header =  do
+%           hashes  <- token $ some $ char '#' 
+%           text    <- nonEmptyLine
+%           return $ Header (length hashes,text)
+%       \end{code}
+%     \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Результаты}
-  \begin{enumerate}
-    \item Разработана библиотека монадических парсеров, полиморфных по входным данным. Акцент сделан на подробность сообщений об ошибках. 
-    \item Разработан транслятор подмножества Markdown с \LaTeX-вставками в HTML.
-    \item Начата разработка библиотеки парсеров, основанных на Extensible Effects.
-    \item Исходный код доступен в Git-репозиториях: \\
-        \small{\url{https://github.com/geo2a/markdown_monparsing}} \\
-        \small{\url{https://github.com/geo2a/ext-effects-parsers}}
-  \end{enumerate}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Результаты}
+%   \begin{enumerate}
+%     \item Разработана библиотека монадических парсеров, полиморфных по входным данным. Акцент сделан на подробность сообщений об ошибках. 
+%     \item Разработан транслятор подмножества Markdown с \LaTeX-вставками в HTML.
+%     \item Начата разработка библиотеки парсеров, основанных на Extensible Effects.
+%     \item Исходный код доступен в Git-репозиториях: \\
+%         \small{\url{https://github.com/geo2a/markdown_monparsing}} \\
+%         \small{\url{https://github.com/geo2a/ext-effects-parsers}}
+%   \end{enumerate}
+% \end{frame}
 
 \end{document}

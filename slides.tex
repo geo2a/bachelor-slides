@@ -389,290 +389,185 @@ Kiselyov}, \textit{Amr Sabry}, \textit{Cameron Swords} – Indiana University, U
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Строковые типы в Haskell}
-  \begin{itemize}
-    \setlength\itemsep{2em}
-    \item[] {\Large{String}} \\
-      \small{Псевдоним для списка символов}
-    \item[] {\Large{ByteString}} \\
-      \small{Наиболее низкоуровневый тип}
-    \item[] {\Large{Text}} \\
-      \small{Тип для работы с Unicode-текстом}
-  \end{itemize}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Строковые типы в Haskell}
+%   \begin{itemize}
+%     \setlength\itemsep{2em}
+%     \item[] {\Large{String}} \\
+%       \small{Псевдоним для списка символов}
+%     \item[] {\Large{ByteString}} \\
+%       \small{Наиболее низкоуровневый тип}
+%     \item[] {\Large{Text}} \\
+%       \small{Тип для работы с Unicode-текстом}
+%   \end{itemize}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Строковые типы как моноиды~[Monoids]}
-    \begin{block}{Полиморфный по входу базовый парсер}
-      \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{item}\mathbin{::}\Conid{TextualMonoid}\;\Varid{t}\Rightarrow \Conid{Parser}\;\Varid{t}\;\Conid{Char}{}\<[E]%
-\\
-\>[B]{}\Varid{item}\mathrel{=}{}\<[9]%
-\>[9]{}\Conid{Parser}\;\Varid{f}{}\<[E]%
-\\
-\>[9]{}\mathbf{where}\;\Varid{f}\;\Varid{inp}\mathrel{=}\Varid{splitCharacterPrefix}\;\Varid{inp}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-    \end{block}
-    \begin{block}{Фукнция, отделяющая префикс}
-      \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{26}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{splitCharacterPrefix}\mathbin{::}{}\<[26]%
-\>[26]{}\Conid{TextualMonoid}\;\Varid{t}\Rightarrow {}\<[E]%
-\\
-\>[26]{}\Varid{t}\to \Conid{Maybe}\;(\Conid{Char},\Varid{t}){}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-    \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Строковые типы как моноиды~[Monoids]}
+%     \begin{block}{Полиморфный по входу базовый парсер}
+%       \begin{code}
+% item :: TextualMonoid t => Parser t Char
+% item =  Parser f 
+%         where f inp = splitCharacterPrefix inp 
+%       \end{code}
+%     \end{block}
+%     \begin{block}{Фукнция, отделяющая префикс}
+%       \begin{code}
+% splitCharacterPrefix ::  TextualMonoid t => 
+%                          t -> Maybe (Char, t)
+%       \end{code}
+%     \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсер как стек монад}
-  \begin{block}{Обновленный тип Parser}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{10}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{18}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{newtype}\;{}\<[10]%
-\>[10]{}\Conid{Parser}\;\Varid{t}\;\Varid{a}\mathrel{=}{}\<[E]%
-\\
-\>[10]{}\Conid{Parser}\;{}\<[18]%
-\>[18]{}(\Conid{StateT}\;(\Conid{ParserState}\;\Varid{t}){}\<[E]%
-\\
-\>[18]{}(\Conid{Either}\;(\Conid{ErrorReport}\;\Varid{t}))\;\Varid{a}){}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Парсер как стек монад}
+%   \begin{block}{Обновленный тип Parser}
+%     \begin{code}
+% newtype  Parser t a = 
+%          Parser  (StateT (ParserState t) 
+%                  (Either (ErrorReport t)) a)
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Extensible Effects~[ExtEff13]}
-  \begin{block}{Тип Eff}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{type}\;\Conid{Eff}\;\Varid{r}\;\Varid{a}\mathrel{=}\Conid{Free}\;(\Conid{Union}\;\Varid{r})\;\Varid{a}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-  \begin{block}{Пример статического набора эффектов}
-    \begin{center}
-Eff (Reader Int :> Reader Bool :> Void) a
-    \end{center}
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Extensible Effects~[ExtEff13]}
+%   \begin{block}{Тип Eff}
+%     \begin{code}
+% type Eff r a = Free (Union r) a
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Пример статического набора эффектов}
+%     \begin{center}
+% Eff (Reader Int :> Reader Bool :> Void) a
+%     \end{center}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
+% \begin{frame}[fragile]
+%   \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
 
-  \begin{block}{Парсер-предикат и его эффекты}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{15}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{sat}\mathbin{::}{}\<[9]%
-\>[9]{}(\Conid{Member}\;\Conid{Fail}\;\Varid{r}{}\<[E]%
-\\
-\>[9]{},\Conid{Member}\;(\Conid{State}\;\Conid{String})\;\Varid{r}{}\<[E]%
-\\
-\>[9]{})\Rightarrow (\Conid{Char}\to \Conid{Bool})\to \Conid{Eff}\;\Varid{r}\;\Conid{Char}{}\<[E]%
-\\
-\>[B]{}\Varid{sat}\;\Varid{p}{}\<[9]%
-\>[9]{}\mathrel{=}\mathbf{do}\;{}\<[15]%
-\>[15]{}\Varid{x}\leftarrow \Varid{item}{}\<[E]%
-\\
-\>[15]{}\mathbf{if}\;\Varid{p}\;\Varid{x}\;\mathbf{then}\;\Varid{return}\;\Varid{x}\;\mathbf{else}\;\Varid{die}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
+%   \begin{block}{Парсер-предикат и его эффекты}
+%     \begin{code}
+% sat ::  ( Member Fail r
+%         , Member (State String) r
+%         ) => (Char -> Bool) -> Eff r Char
+% sat p   = do  x <- item
+%               if p x then return x else die
+%     \end{code}
+%   \end{block}
 
-  \begin{block}{Запуск парсера}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{parse}\;\Varid{p}\;\Varid{inp}\mathrel{=}\Varid{run}\mathbin{\circ}\Varid{runFail}\mathbin{\circ}\Varid{runState}\;\Varid{inp}\mathbin{\$}\Varid{p}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-\end{frame}
+%   \begin{block}{Запуск парсера}
+%     \begin{code}
+% parse p inp = run . runFail . runState inp $ p
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
+% \begin{frame}[fragile]
+%   \frametitle{Парсеры на Extensible Effects~[ExtEff13]}
 
-  \begin{block}{Парсер для слов и его эффекты}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{10}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{word}\mathbin{::}{}\<[10]%
-\>[10]{}(\Conid{Member}\;\Conid{Fail}\;\Varid{r}{}\<[E]%
-\\
-\>[10]{},\Conid{Member}\;(\Conid{State}\;\Conid{String})\;\Varid{r}{}\<[E]%
-\\
-\>[10]{},\Conid{Member}\;(\Conid{Choose})\;\Varid{r})\Rightarrow \Conid{Eff}\;\Varid{r}\;\Conid{String}{}\<[E]%
-\\
-\>[B]{}\Varid{word}\mathrel{=}\Varid{some}\;\Varid{letter}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
+%   \begin{block}{Парсер для слов и его эффекты}
+%     \begin{code}
+% word ::  (Member Fail r
+%          , Member (State String) r
+%          , Member (Choose) r) => Eff r String
+% word = some letter
+% 	  \end{code}
+%   \end{block}
 
-  \begin{block}{Запуск парсера}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{parseWithChoose}\;\Varid{p}\;\Varid{inp}\mathrel{=}{}\<[E]%
-\\
-\>[B]{}\hsindent{3}{}\<[3]%
-\>[3]{}\Varid{run}\mathbin{\circ}\Varid{runChoice}\mathbin{\circ}\Varid{runFail}\mathbin{\circ}\Varid{runState}\;\Varid{inp}\mathbin{\$}\Varid{p}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-\end{frame}
+%   \begin{block}{Запуск парсера}
+%     \begin{code}
+% parseWithChoose p inp =
+%   run . runChoice . runFail . runState inp $ p
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Язык Markdown и его использование}
-    \vspace{5em}
-    \includegraphics[scale=1]{images/markdown.png}
-    \includegraphics[scale=0.35]{images/octocat.png}
-    \includegraphics[scale=0.35]{images/discourse.png}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Язык Markdown и его использование}
+%     \vspace{5em}
+%     \includegraphics[scale=1]{images/markdown.png}
+%     \includegraphics[scale=0.35]{images/octocat.png}
+%     \includegraphics[scale=0.35]{images/discourse.png}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Пример документа Markdown}
-  \vspace{0.5cm}
-  \screenshotw{11cm}{md-html.png}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Пример документа Markdown}
+%   \vspace{0.5cm}
+%   \screenshotw{11cm}{md-html.png}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{AST для Markdown в Haskell}
-  \begin{block}{Документ}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{type}\;\Conid{Document}\mathrel{=}[\mskip1.5mu \Conid{Block}\mskip1.5mu]{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-  \begin{block}{Блок}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{7}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{data}\;{}\<[7]%
-\>[7]{}\Conid{Block}{}\<[14]%
-\>[14]{}\mathrel{=}\Conid{Blank}{}\<[E]%
-\\
-\>[14]{}\mid \Conid{Header}\;(\Conid{Int},\Conid{Line}){}\<[E]%
-\\
-\>[14]{}\mid \Conid{Paragraph}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
-\\
-\>[14]{}\mid \Conid{UnorderedList}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
-\\
-\>[14]{}\mid \Conid{BlockQuote}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{AST для Markdown в Haskell}
+%   \begin{block}{Документ}
+%     \begin{code}
+% type Document = [Block]
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Блок}
+%     \begin{code}
+% data  Block  = Blank
+%              | Header (Int,Line)
+%              | Paragraph [Line]
+%              | UnorderedList [Line]
+%              | BlockQuote [Line]
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{AST для Markdown в Haskell}
-  \begin{block}{Строка}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{data}\;\Conid{Line}\mathrel{=}\Conid{Empty}\mid \Conid{NonEmpty}\;[\mskip1.5mu \Conid{Inline}\mskip1.5mu]{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-  \begin{block}{Элементы строки}
-    \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{7}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{15}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{data}\;{}\<[7]%
-\>[7]{}\Conid{Inline}{}\<[15]%
-\>[15]{}\mathrel{=}\Conid{Plain}\;\Conid{String}{}\<[E]%
-\\
-\>[15]{}\mid \Conid{Bold}\;\Conid{String}{}\<[E]%
-\\
-\>[15]{}\mid \Conid{Italic}\;\Conid{String}{}\<[E]%
-\\
-\>[15]{}\mid \Conid{Monospace}\;\Conid{String}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-  \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{AST для Markdown в Haskell}
+%   \begin{block}{Строка}
+%     \begin{code}
+% data Line = Empty | NonEmpty [Inline]    
+%     \end{code}
+%   \end{block}
+%   \begin{block}{Элементы строки}
+%     \begin{code}
+% data  Inline  = Plain String
+%               | Bold String
+%               | Italic String
+%               | Monospace String    
+%     \end{code}
+%   \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Конструирование AST}
-    \begin{block}{Парсер для документа}
-      \vspace{-1.4em}
-      \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{24}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{doc}\mathbin{::}{}\<[9]%
-\>[9]{}\Conid{\Conid{TM}.TextualMonoid}\;\Varid{t}\Rightarrow \Conid{Parser}\;\Varid{t}\;\Conid{Document}{}\<[E]%
-\\
-\>[B]{}\Varid{doc}\mathrel{=}{}\<[9]%
-\>[9]{}\Varid{many}\;\Varid{block}{}\<[E]%
-\\
-\>[9]{}\mathbf{where}\;\Varid{block}\mathrel{=}{}\<[24]%
-\>[24]{}\Varid{blank}\mathbin{\raisebox{0.3ex}{$\scriptstyle < | >$}}\Varid{header}\mathbin{\raisebox{0.3ex}{$\scriptstyle < | >$}}\Varid{paragraph}{}\<[E]%
-\\
-\>[24]{}\mathbin{\raisebox{0.3ex}{$\scriptstyle < | >$}}\Varid{unorderdList}\mathbin{\raisebox{0.3ex}{$\scriptstyle < | >$}}\Varid{blockquote}{}\<[E]%
-\\
-\>[24]{}\mathbin{\raisebox{0.3ex}{$\scriptstyle < | >$}}\Varid{blockMath}{}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-      \vspace{-1.45em}
-    \end{block}
-    \begin{block}{Пример парсера для заголовка}
-      \vspace{-1.4em}
-      \begin{hscode}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{header}\mathbin{::}\Conid{\Conid{TM}.TextualMonoid}\;\Varid{t}\Rightarrow \Conid{Parser}\;\Varid{t}\;\Conid{Block}{}\<[E]%
-\\
-\>[B]{}\Varid{header}\mathrel{=}{}\<[11]%
-\>[11]{}\mathbf{do}{}\<[E]%
-\\
-\>[11]{}\Varid{hashes}{}\<[19]%
-\>[19]{}\leftarrow \Varid{token}\mathbin{\$}\Varid{some}\mathbin{\$}\Varid{char}\;\text{\tt '\#'}{}\<[E]%
-\\
-\>[11]{}\Varid{text}{}\<[19]%
-\>[19]{}\leftarrow \Varid{nonEmptyLine}{}\<[E]%
-\\
-\>[11]{}\Varid{return}\mathbin{\$}\Conid{Header}\;(\Varid{length}\;\Varid{hashes},\Varid{text}){}\<[E]%
-\ColumnHook
-\end{hscode}\resethooks
-    \end{block}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Конструирование AST}
+%     \begin{block}{Парсер для документа}
+%       \vspace{-1.4em}
+%       \begin{code}
+% doc ::  TM.TextualMonoid t => Parser t Document
+% doc =   many block
+%         where block =  blank <|> header <|> paragraph 
+%                        <|> unorderdList <|> blockquote 
+%                        <|> blockMath
+%       \end{code}
+%       \vspace{-1.45em}
+%     \end{block}
+%     \begin{block}{Пример парсера для заголовка}
+%       \vspace{-1.4em}
+%       \begin{code}
+% header :: TM.TextualMonoid t => Parser t Block 
+% header =  do
+%           hashes  <- token $ some $ char '#' 
+%           text    <- nonEmptyLine
+%           return $ Header (length hashes,text)
+%       \end{code}
+%     \end{block}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Результаты}
-  \begin{enumerate}
-    \item Разработана библиотека монадических парсеров, полиморфных по входным данным. Акцент сделан на подробность сообщений об ошибках. 
-    \item Разработан транслятор подмножества Markdown с \LaTeX-вставками в HTML.
-    \item Начата разработка библиотеки парсеров, основанных на Extensible Effects.
-    \item Исходный код доступен в Git-репозиториях: \\
-        \small{\url{https://github.com/geo2a/markdown_monparsing}} \\
-        \small{\url{https://github.com/geo2a/ext-effects-parsers}}
-  \end{enumerate}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Результаты}
+%   \begin{enumerate}
+%     \item Разработана библиотека монадических парсеров, полиморфных по входным данным. Акцент сделан на подробность сообщений об ошибках. 
+%     \item Разработан транслятор подмножества Markdown с \LaTeX-вставками в HTML.
+%     \item Начата разработка библиотеки парсеров, основанных на Extensible Effects.
+%     \item Исходный код доступен в Git-репозиториях: \\
+%         \small{\url{https://github.com/geo2a/markdown_monparsing}} \\
+%         \small{\url{https://github.com/geo2a/ext-effects-parsers}}
+%   \end{enumerate}
+% \end{frame}
 
 \end{document}
