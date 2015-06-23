@@ -80,8 +80,6 @@ Kiselyov}, \textit{Amr Sabry}, \textit{Cameron Swords} – Indiana University, U
       \footnotesize{\url{https://hackage.haskell.org/package/parsec}}
     \item[] {\Large{Attoparsec}} \\
       \footnotesize{\url{https://hackage.haskell.org/package/attoparsec}}
-    \item[] {\Large{Picoparsec}} \\
-      \footnotesize{\url{https://hackage.haskell.org/package/picoparsec}}
   \end{itemize}
 \end{frame}
 
@@ -202,15 +200,7 @@ parseWithChoose p inp =
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Язык Markdown и его использование}
-    \vspace{5em}
-    \includegraphics[scale=1]{images/markdown.png}
-    \includegraphics[scale=0.35]{images/octocat.png}
-    \includegraphics[scale=0.35]{images/discourse.png}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Пример документа Markdown}
+  \frametitle{Язык Markdown}
   \vspace{0.5cm}
   \screenshotw{11cm}{md-html.png}
 \end{frame}
