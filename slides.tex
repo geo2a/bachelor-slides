@@ -329,16 +329,16 @@ Kiselyov}, \textit{Amr Sabry}, \textit{Cameron Swords} – Indiana University, U
   \end{description}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Библиотеки монадических парсеров}
-  \begin{itemize}
-    \setlength\itemsep{2em}
-    \item[] {\Large{Parsec}} \\
-      \footnotesize{\url{https://hackage.haskell.org/package/parsec}}
-    \item[] {\Large{Attoparsec}} \\
-      \footnotesize{\url{https://hackage.haskell.org/package/attoparsec}}
-  \end{itemize}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Библиотеки монадических парсеров}
+%   \begin{itemize}
+%     \setlength\itemsep{2em}
+%     \item[] {\Large{Parsec}} \\
+%       \footnotesize{\url{https://hackage.haskell.org/package/parsec}}
+%     \item[] {\Large{Attoparsec}} \\
+%       \footnotesize{\url{https://hackage.haskell.org/package/attoparsec}}
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Исходный тип для парсера~[MParsers96]}
@@ -555,19 +555,26 @@ Eff (Reader Int :> Reader Bool :> Void) a
     \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{7}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{14}{@{}>{\hspre}c<{\hspost}@{}}%
+\column{14E}{@{}l@{}}%
+\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\mathbf{data}\;{}\<[7]%
 \>[7]{}\Conid{Block}{}\<[14]%
-\>[14]{}\mathrel{=}\Conid{Blank}{}\<[E]%
+\>[14]{}\mathrel{=}{}\<[14E]%
+\>[17]{}\Conid{Blank}{}\<[E]%
 \\
-\>[14]{}\mid \Conid{Header}\;(\Conid{Int},\Conid{Line}){}\<[E]%
+\>[14]{}\mid {}\<[14E]%
+\>[17]{}\Conid{Header}\;(\Conid{Int},\Conid{Line}){}\<[E]%
 \\
-\>[14]{}\mid \Conid{Paragraph}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
+\>[14]{}\mid {}\<[14E]%
+\>[17]{}\Conid{Paragraph}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
 \\
-\>[14]{}\mid \Conid{UnorderedList}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
+\>[14]{}\mid {}\<[14E]%
+\>[17]{}\Conid{UnorderedList}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
 \\
-\>[14]{}\mid \Conid{BlockQuote}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
+\>[14]{}\mid {}\<[14E]%
+\>[17]{}\Conid{BlockQuote}\;[\mskip1.5mu \Conid{Line}\mskip1.5mu]{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
   \end{block}

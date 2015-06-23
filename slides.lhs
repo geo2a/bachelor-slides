@@ -72,16 +72,16 @@ Kiselyov}, \textit{Amr Sabry}, \textit{Cameron Swords} – Indiana University, U
   \end{description}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Библиотеки монадических парсеров}
-  \begin{itemize}
-    \setlength\itemsep{2em}
-    \item[] {\Large{Parsec}} \\
-      \footnotesize{\url{https://hackage.haskell.org/package/parsec}}
-    \item[] {\Large{Attoparsec}} \\
-      \footnotesize{\url{https://hackage.haskell.org/package/attoparsec}}
-  \end{itemize}
-\end{frame}
+% \begin{frame}[fragile]
+%   \frametitle{Библиотеки монадических парсеров}
+%   \begin{itemize}
+%     \setlength\itemsep{2em}
+%     \item[] {\Large{Parsec}} \\
+%       \footnotesize{\url{https://hackage.haskell.org/package/parsec}}
+%     \item[] {\Large{Attoparsec}} \\
+%       \footnotesize{\url{https://hackage.haskell.org/package/attoparsec}}
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Исходный тип для парсера~[MParsers96]}
@@ -214,11 +214,11 @@ type Document = [Block]
   \end{block}
   \begin{block}{Блок}
     \begin{code}
-data  Block  = Blank
-             | Header (Int,Line)
-             | Paragraph [Line]
-             | UnorderedList [Line]
-             | BlockQuote [Line]
+data  Block  =  Blank
+             |  Header (Int,Line)
+             |  Paragraph [Line]
+             |  UnorderedList [Line]
+             |  BlockQuote [Line]
     \end{code}
   \end{block}
 \end{frame}
